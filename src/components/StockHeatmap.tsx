@@ -1,41 +1,45 @@
-// components/ForexHeatmap.tsx
+// components/StockHeatmap.tsx
 import React, { useEffect, useRef, memo } from 'react';
 
-function ForexHeatmap() {
+function StockHeatmap() {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentContainer = container.current;
     const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js";
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js";
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = `
     {
-      "width": "100%",
-      "height": "100%",
-      "currencies": [
-        "EUR",
-        "USD",
-        "JPY",
-        "AUD",
-        "CNY",
-        "KRW"
+      "exchanges": [
+        "KOSPI",
+        "KOSDAQ"
       ],
-      "isTransparent": false,
-      "colorTheme": "light",
+      "dataSource": "SPK",
+      "grouping": "sector",
+      "blockSize": "market_cap_basic",
+      "blockColor": "change",
       "locale": "en",
-      "backgroundColor": "#ffffff"
+      "symbolUrl": "",
+      "colorTheme": "light",
+      "hasTopBar": false,
+      "isDataSetEnabled": false,
+      "isZoomEnabled": true,
+      "hasSymbolTooltip": true,
+      "width": "100%",
+      "height": "100%"
     }`;
     
-    if (container.current) {
-      container.current.appendChild(script);
+    if (currentContainer) {
+      currentContainer.appendChild(script);
     }
 
     return () => {
-      if (container.current) {
-        const scriptElement = container.current.querySelector('script');
+      if (currentContainer) {
+        const scriptElement = currentContainer.querySelector('script');
         if (scriptElement) {
-          container.current.removeChild(scriptElement);
+          currentContainer.removeChild(scriptElement);
         }
       }
     };
@@ -53,4 +57,4 @@ function ForexHeatmap() {
   );
 }
 
-export default memo(ForexHeatmap);
+export default memo(StockHeatmap);

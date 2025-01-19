@@ -5,6 +5,7 @@ function ForexHeatmap() {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentContainer = container.current;
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-forex-heat-map.js";
     script.type = "text/javascript";
@@ -27,15 +28,15 @@ function ForexHeatmap() {
       "backgroundColor": "#ffffff"
     }`;
     
-    if (container.current) {
-      container.current.appendChild(script);
+    if (currentContainer) {
+      currentContainer.appendChild(script);
     }
 
     return () => {
-      if (container.current) {
-        const scriptElement = container.current.querySelector('script');
+      if (currentContainer) {
+        const scriptElement = currentContainer.querySelector('script');
         if (scriptElement) {
-          container.current.removeChild(scriptElement);
+          currentContainer.removeChild(scriptElement);
         }
       }
     };
